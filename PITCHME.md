@@ -99,11 +99,11 @@ end
 ```
 
 #HSLIDE
-### Throw/Catch
+Throw/Catch
 ![Image-Absolute](assets/spaghetti.jpg)
 
 #HSLIDE
-С throw 'подхвърляме' стойност, която може да се 'хване' по-късно:
+С `throw` *'подхвърляме'* стойност, която може да се *'хване'* по-късно:
 
 ```elixir
 try do
@@ -137,7 +137,7 @@ end # и процесът всъщност остава жив
 
 #HSLIDE
 
-### За целите на този курс се забраняват (освен ако не е необходимо или изрично указано иначе):
+За целите на този курс се забраняват (освен ако не е необходимо или изрично указано иначе):
 * `if, unless, cond` (напомняме)
 * `try/catch`
 * `try/rescue`
@@ -170,7 +170,7 @@ IO.write(:stderr, "Това е грешка!")
 ![Image-Absolute](assets/wait_what.jpg)
 
 #HSLIDE
-### Какво е chardata
+Какво е *chardata*?
 
 * Низ, да речем `"Далия"`.
 * Списък от codepoint-и, да речем `[83, 79, 0x53]` или `[?S, ?O, ?S]` или `'SOS'`.
@@ -262,10 +262,11 @@ File.close(file)
 
 #HSLIDE
 Процеси и файлове
+
 ![Image-Absolute](assets/process_file.jpg)
 
 #HSLIDE
-### Потоци и файлове
+Потоци и файлове
 
 ```elixir
 {:ok, file} = File.open("program.txt", [:read])
