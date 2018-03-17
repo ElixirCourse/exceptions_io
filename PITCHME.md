@@ -54,6 +54,7 @@ raise ArgumentError, message: "Грешка, брато!"
 #=> (ArgumentError) Грешка, брато!
 ```
 
+#HSLIDE
 ```elixir
 try do
   1 / 0
@@ -140,6 +141,7 @@ end # и процесът всъщност остава жив
 * `if, unless, cond` (напомняме)
 * `try/catch`
 * `try/rescue`
+* `raise, throw`
 
 
 #HSLIDE
@@ -147,7 +149,7 @@ end # и процесът всъщност остава жив
 ![Image-Absolute](assets/pipes.jpg)
 
 #HSLIDE
-### Изход с IO.puts/2 и IO.write/2
+Изход с `IO.puts/2` и `IO.write/2`
 
 ```elixir
 IO.puts("По подразбиране пишем на стандартния изход.")
@@ -161,12 +163,19 @@ IO.write(:stderr, "Това е грешка!")
 ```
 
 #HSLIDE
+* Първият аргумент на `puts` и `write` може да е атом или *pid*. Нарича се `device` и представлява друг процес.
+* Вторият аргумент се очаква да е нещо от тип *chardata*.
+
+#HSLIDE
+![Image-Absolute](assets/wait_what.jpg)
+
+#HSLIDE
 ### Какво е chardata
 
-* Низ, да речем "Далия".
-* Списък от codepoint-и, да речем [83, 79, 0x53] или [?S, ?O, ?S] или 'SOS'. <!-- .element: class="fragment" -->
-* Списък от codepoint-и и низове - [83, 79, 83, "mayday!"]. <!-- .element: class="fragment" -->
-* Списък от chardata, тоест списък от нещата в горните три точки : [[83], [79, ["dir", 78]]]. <!-- .element: class="fragment" -->
+* Низ, да речем `"Далия"`.
+* Списък от codepoint-и, да речем `[83, 79, 0x53]` или `[?S, ?O, ?S]` или `'SOS'`.
+* Списък от codepoint-и и низове - `[83, 79, 83, "mayday!"]`.
+* Списък от chardata, тоест списък от нещата в горните три точки : `[[83], [79, ["dir", 78]]]`.
 
 #HSLIDE
 ```elixir
@@ -175,7 +184,28 @@ IO.chardata_to_string([1049, [1086, 1091], "!"])
 ```
 
 #HSLIDE
-### Вход с IO.read/2, IO.gets/2, IO.getn/2 и IO.getn/3
+Имаме и `IO.inspect/2`.
+* Връща каквото му е подадено. Може да се `chain`-ва.
+* Приема *pretty print* опции.
+* Приема етикети.
+* Чудесно за debugging.
+
+#HSLIDE
+
+```elixir
+defmodule TaskEnum do
+  def map(enumerable, fun) do
+    enumerable
+    |> IO.inspect(label: "Input", structs: false)
+    |> Enum.map(& Task.async(fn -> fun.(&1) end))
+    |> IO.inspect(label: "Tasks", width: 120, limit: :infinity)
+    |> Enum.map(& Task.await(&1))
+  end
+end
+```
+
+#HSLIDE
+Вход с IO.read/2, IO.gets/2, IO.getn/2 и IO.getn/3
 
 ```elixir
 IO.read(:line)
@@ -191,7 +221,14 @@ IO.gets("Кажи нещо!\n")
 ```
 
 #HSLIDE
-### Какво е iodata
+* Функции като `write` и `read` имат версии наречени `binwrite` и `binread`.
+* Разликата е, че приемат `iodata`, вместо `chardata`.
+* По бързи са. Добри за четене на *binary*/не-unicode файлове.
+
+
+#HSLIDE
+Какво е *iodata*?
+
 * Подобно на *chardata*, *iodata* може да се дефинира като списък.
 * За разлика от *chardata*, *iodata* списъкът е от цели числа които представляват байтове (0 - 255),
 * *binary* с елементи със *size*, кратен на **8** (могат да превъртат) и такива списъци.
@@ -217,11 +254,14 @@ IO.iodata_to_binary([1, << 2 >>, [[3], 4]])
 #=> {:ok, #PID<0.855.0>}
 
 IO.binwrite(file, "some text!")
+#=> :ok
+
 File.close(file)
+#=> :ok
 ```
 
 #HSLIDE
-### Процеси и файлове
+Процеси и файлове
 ![Image-Absolute](assets/process_file.jpg)
 
 #HSLIDE
@@ -246,14 +286,14 @@ File.stream!(input_name, read_ahead: <buffer_size>)
 ```
 
 #HSLIDE
-### Модула IO.ANSI
+Модула `IO.ANSI`
 
 ```elixir
 IO.puts [IO.ANSI.blue(), "text", IO.ANSI.reset()]
 ```
 
 #HSLIDE
-### Модула StringIO и файлове в паметта
+Модула `StringIO` и файлове в паметта
 
 ```elixir
 {:ok, pid} = StringIO.open("data") #PID<0.136.0>}
@@ -288,7 +328,7 @@ IO.binread(file, :all)
 ```
 
 #HSLIDE
-### Модула Path
+Модула `Path`
 
 ```elixir
 Path.join("some", "path")
