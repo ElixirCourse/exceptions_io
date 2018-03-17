@@ -100,6 +100,7 @@ end
 
 #HSLIDE
 Throw/Catch
+
 ![Image-Absolute](assets/spaghetti.jpg)
 
 #HSLIDE
