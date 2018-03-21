@@ -94,6 +94,7 @@ defmodule VeryBadError do
   defexception message: "Лошо!!!"
 end
 ```
+@[2]
 
 ---
 ```elixir
@@ -109,6 +110,8 @@ end
 #=>    message: "Лошо!!!"
 #=> }
 ```
+@[2]
+@[3-6]
 
 ---
 Throw/Catch
@@ -129,12 +132,15 @@ catch
 end
 #=> 5
 ```
+@[3]
+@[5]
+@[5-8]
 
 ---
 Нещо още по-рядко (г/д колкото трикрак еднорог):
 ```elixir
 try do
-  exit "I am exiting" # така можем да излезем от процес
+  exit("I am exiting") # така можем да излезем от процес
 catch
   :exit, _ -> IO.puts "not really"
 end # и процесът всъщност остава жив
@@ -290,6 +296,9 @@ IO.stream(file, :line)
 |> Stream.each(fn line -> IO.puts line end)
 |> Stream.run()
 ```
+@[3]
+@[4]
+@[5]
 
 ---
 ```elixir
@@ -298,6 +307,9 @@ File.stream!(input_name, read_ahead: <buffer_size>)
 |> Stream.into(File.stream!(output_name, [:delayed_write]))
 |> Stream.run
 ```
+@[1]
+@[2]
+@[3]
 
 ---
 Модула `IO.ANSI`
@@ -320,6 +332,10 @@ StringIO.contents(pid) # {"", "doom!"}
 
 StringIO.close(pid) # {:ok, {"", "doom!"}}
 ```
+@[1-2]
+@[4-5]
+@[6-7]
+@[9]
 
 ---
 ```elixir
