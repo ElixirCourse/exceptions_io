@@ -1,60 +1,60 @@
-#HSLIDE
+---
 ## Грешки
 ## Вход-изход
 
-#HSLIDE
+---
 ![Image-Absolute](assets/leftovers.jpg)
 
-#HSLIDE
+---
 ## Грешки
 ![Image-Absolute](assets/exception.jpg)
 
-#HSLIDE
+---
 Част от общата концепция на Elixir и Erlang е грешките да бъдат **фатални** и да **убиват процеса**,
 в който са възникнали.
 
 Нека някой друг процес (supervisor) се оправя с проблема.
 
-#HSLIDE
+---
 ![Image-Absolute](assets/fatality.jpg)
 
-#HSLIDE
+---
 Ако работим с файлове, задачата на един процес е просто да го отвори и прочете - какво се случва,
 ако файлът липсва (а не трябва), е проблем на някой друг процес.
 
-#HSLIDE
+---
 * Грешките в Elixir **не са** препоръчителни за употреба.
 * Имат славата на GOTO програмиране и наистина е хубаво да помислим дали има нужда от тях в дадена ситуация.
 
-#HSLIDE
+---
 * Прието е функции, при които има проблем да връщат `{:error, <проблем>}`.
 * Ако се изпълняват с успех ще имат резултат `{:ok, <резултат>}`.
 * Имената на функции, които биха могли да 'вдигат' грешка, обикновено завършват на '!'.
 
-#HSLIDE
+---
 *'Вдигане'* и *'спасяване'*
 
 ![Image-Absolute](assets/iamerror.jpg)
 
-#HSLIDE
+---
 ```elixir
 raise "Ужаст!"
 #=> (RuntimeError) Ужаст!
 ```
 
-#HSLIDE
+---
 ```elixir
 raise RuntimeError
 #=> (RuntimeError) runtime error
 ```
 
-#HSLIDE
+---
 ```elixir
 raise ArgumentError, message: "Грешка, брато!"
 #=> (ArgumentError) Грешка, брато!
 ```
 
-#HSLIDE
+---
 ```elixir
 try do
   1 / 0
@@ -71,19 +71,25 @@ after
   IO.puts("Finally!")
 end
 ```
+@[1-3]
+@[4-5]
+@[6-7]
+@[8-9]
+@[10-11]
+@[12-14]
 
-#HSLIDE
+---
 ### Създаване на нови типове грешки
 ![Image-Absolute](assets/new_exception.jpg)
 
-#HSLIDE
+---
 ```elixir
 defmodule VeryBadError do
   defexception message: "Лошо!!!"
 end
 ```
 
-#HSLIDE
+---
 ```elixir
 try do
   raise VeryBadError
@@ -98,12 +104,12 @@ end
 #=> }
 ```
 
-#HSLIDE
+---
 Throw/Catch
 
 ![Image-Absolute](assets/spaghetti.jpg)
 
-#HSLIDE
+---
 С `throw` *'подхвърляме'* стойност, която може да се *'хване'* по-късно:
 
 ```elixir
@@ -118,7 +124,7 @@ end
 #=> 5
 ```
 
-#HSLIDE
+---
 Нещо още по-рядко (г/д колкото трикрак еднорог):
 ```elixir
 try do
@@ -128,15 +134,15 @@ catch
 end # и процесът всъщност остава жив
 ```
 
-#HSLIDE
+---
 ### Сега - забравете за тях и не ги ползвайте.
 ![Image-Absolute](assets/forget.jpg)
 
-#HSLIDE
+---
 1. В кода на mix няма прихващане на грешки.
 2. В кода на компилатора на Elixir има точно пет прихващания.
 
-#HSLIDE
+---
 
 За целите на този курс се забраняват (освен ако не е необходимо или изрично указано иначе):
 * `if, unless, cond` (напомняме)
@@ -145,11 +151,11 @@ end # и процесът всъщност остава жив
 * `raise, throw`
 
 
-#HSLIDE
+---
 ## Вход-изход
 ![Image-Absolute](assets/pipes.jpg)
 
-#HSLIDE
+---
 Изход с `IO.puts/2` и `IO.write/2`
 
 ```elixir
@@ -158,19 +164,19 @@ IO.puts(:stdio, "Можем да го направим и така.")
 IO.puts(:stderr, "Или да пишем в стандартния изход за грешки.")
 ```
 
-#HSLIDE
+---
 ```elixir
 IO.write(:stderr, "Това е грешка!")
 ```
 
-#HSLIDE
+---
 * Първият аргумент на `puts` и `write` може да е атом или *pid*. Нарича се `device` и представлява друг процес.
 * Вторият аргумент се очаква да е нещо от тип *chardata*.
 
-#HSLIDE
+---
 ![Image-Absolute](assets/wait_what.jpg)
 
-#HSLIDE
+---
 Какво е *chardata*?
 
 * Низ, да речем `"Далия"`.
@@ -178,20 +184,20 @@ IO.write(:stderr, "Това е грешка!")
 * Списък от codepoint-и и низове - `[83, 79, 83, "mayday!"]`.
 * Списък от chardata, тоест списък от нещата в горните три точки : `[[83], [79, ["dir", 78]]]`.
 
-#HSLIDE
+---
 ```elixir
 IO.chardata_to_string([1049, [1086, 1091], "!"])
 #=> "Йоу!"
 ```
 
-#HSLIDE
+---
 Имаме и `IO.inspect/2`.
 * Връща каквото му е подадено. Може да се `chain`-ва.
 * Приема *pretty print* опции.
 * Приема етикети.
 * Чудесно за debugging.
 
-#HSLIDE
+---
 
 ```elixir
 defmodule TaskEnum do
@@ -205,7 +211,7 @@ defmodule TaskEnum do
 end
 ```
 
-#HSLIDE
+---
 Вход с IO.read/2, IO.gets/2, IO.getn/2 и IO.getn/3
 
 ```elixir
@@ -221,20 +227,20 @@ IO.gets("Кажи нещо!\n")
 #=> "Нещо!\n"
 ```
 
-#HSLIDE
+---
 * Функции като `write` и `read` имат версии наречени `binwrite` и `binread`.
 * Разликата е, че приемат `iodata`, вместо `chardata`.
 * По бързи са. Добри за четене на *binary*/не-unicode файлове.
 
 
-#HSLIDE
+---
 Какво е *iodata*?
 
 * Подобно на *chardata*, *iodata* може да се дефинира като списък.
 * За разлика от *chardata*, *iodata* списъкът е от цели числа които представляват байтове (0 - 255),
 * *binary* с елементи със *size*, кратен на **8** (могат да превъртат) и такива списъци.
 
-#HSLIDE
+---
 ```elixir
 IO.iodata_length([1, 2 | <<3, 4>>])
 #=> 4
@@ -245,11 +251,11 @@ IO.iodata_to_binary([1, << 2 >>, [[3], 4]])
 #=> <<1, 2, 3, 4>>
 ```
 
-#HSLIDE
+---
 ### Файлове
 ![Image-Absolute](assets/folders.jpg)
 
-#HSLIDE
+---
 ```elixir
 {:ok, file} = File.open("test.txt", [:write])
 #=> {:ok, #PID<0.855.0>}
@@ -261,12 +267,12 @@ File.close(file)
 #=> :ok
 ```
 
-#HSLIDE
+---
 Процеси и файлове
 
 ![Image-Absolute](assets/process_file.jpg)
 
-#HSLIDE
+---
 Потоци и файлове
 
 ```elixir
@@ -279,7 +285,7 @@ IO.stream(file, :line)
 |> Stream.run()
 ```
 
-#HSLIDE
+---
 ```elixir
 File.stream!(input_name, read_ahead: <buffer_size>)
 |> Stream.<transform-or-filter>
@@ -287,14 +293,14 @@ File.stream!(input_name, read_ahead: <buffer_size>)
 |> Stream.run
 ```
 
-#HSLIDE
+---
 Модула `IO.ANSI`
 
 ```elixir
 IO.puts [IO.ANSI.blue(), "text", IO.ANSI.reset()]
 ```
 
-#HSLIDE
+---
 Модула `StringIO` и файлове в паметта
 
 ```elixir
@@ -309,7 +315,7 @@ StringIO.contents(pid) # {"", "doom!"}
 StringIO.close(pid) # {:ok, {"", "doom!"}}
 ```
 
-#HSLIDE
+---
 ```elixir
 File.open("data", [:ram])
 #=> {:ok, {:file_descriptor, :ram_file, #Port<0.1578>}}
@@ -322,14 +328,14 @@ IO.binread(file, :all)
 #=> ""
 ```
 
-#HSLIDE
+---
 ```elixir
 :file.position(file, :bof)
 IO.binread(file, :all)
 #=> "data"
 ```
 
-#HSLIDE
+---
 Модула `Path`
 
 ```elixir
@@ -339,6 +345,6 @@ Path.expand("~/development")
 #=> "/home/meddle/development"
 ```
 
-#HSLIDE
+---
 ## The End
 ![Image-Absolute](assets/nap.jpg)
