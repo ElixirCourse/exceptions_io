@@ -281,11 +281,6 @@ File.close(file)
 ```
 
 ---
-Процеси и файлове
-
-![Image-Absolute](assets/process_file.jpg)
-
----
 Потоци и файлове
 
 ```elixir
@@ -367,6 +362,12 @@ Path.join("some", "path")
 Path.expand("~/development")
 #=> "/home/meddle/development"
 ```
+
+---
+Процеси и IO
+
+![Image-Absolute](assets/process_file.jpg)
+
 
 ---
 ## The End
